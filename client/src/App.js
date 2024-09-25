@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Ingresos from './components/Ingresos';
 import Gastos from './components/Gastos';
@@ -6,18 +6,14 @@ import NewIngreso from './components/NewIngreso';
 import NewGasto from './components/NewGasto';     
 import Axios from 'axios';
 
-const App = () => {
+function App () {
   const [datos, setDatos] = useState([]);
   const [ingresosList, setIngresos] = useState([]);
   const [gastosList, setGastos] = useState([]);
   const [datoEditable, setDatoEditable] = useState([]);
   //const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const ingresosResponse = await Axios.get('http://localhost:3001/ingresos');
       setIngresos(ingresosResponse.data);
@@ -27,7 +23,11 @@ const App = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, []);  // Aquí puedes agregar dependencias si es necesario
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <>
@@ -49,12 +49,13 @@ const App = () => {
         ingresosList = {ingresosList}
         setIngresos = {setIngresos}
         setDatoEditable = {setDatoEditable}
+        fetchData = {fetchData}
       />
 
       <Routes>
         <Route 
           path = "/NewIngreso" 
-          element = {<NewIngreso datos = {datos} setDatos = {setDatos} datoEditable = {datoEditable} setDatoEditable = {setDatoEditable} />} 
+          element = {<NewIngreso datos = {datos} setDatos = {setDatos} datoEditable = {datoEditable} setDatoEditable = {setDatoEditable} fetchData = {fetchData} />} 
         />
       </Routes>
 

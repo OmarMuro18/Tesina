@@ -3,12 +3,13 @@ import Axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const Ingresos = ({ ingresosList, setIngresos, setDatoEditable }) => {
+function Ingresos ({ ingresosList, setIngresos, setDatoEditable, fetchData }) {
   const navigate = useNavigate();
 
   const newIngresoForm = () => {
     setDatoEditable(null);
     navigate('/NewIngreso');
+
   };
 
   const editIngresoForm = (ing) => {
@@ -30,12 +31,17 @@ const Ingresos = ({ ingresosList, setIngresos, setDatoEditable }) => {
 
     if (result.isConfirmed) {
       await Axios.delete(`http://localhost:3001/delete/${idIngreso}`);
+      
       await Swal.fire({
         title: 'Eliminado',
         text: 'El registro ha sido eliminado',
         icon: 'success',
         timer: 3000,
       });
+      
+      fetchData();
+      navigate('/');
+      return;
     }
   };
 

@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable }) {
+function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData }) {
   const [idIngreso, setIdIngresos] = useState(null);
   const [concepto, setConcepto] = useState("");
   const [cantidad, setCantidad] = useState("");
@@ -38,6 +38,7 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable }) {
         timer: 3000
       });
       
+      fetchData();
       navigate('/');
       return;
     }
@@ -51,6 +52,7 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable }) {
       timer: 3000
     });
     
+    fetchData();
     navigate('/');
   };
 

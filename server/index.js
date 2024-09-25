@@ -35,6 +35,7 @@ app.get("/ingresos", (req, res) => {
             console.log(err);
             return;
         }
+        res.send(result)
     }
     );
 });
@@ -92,6 +93,7 @@ app.get("/gastos", (req, res) =>{
             console.log(err);
             return;
         }
+        res.send(result)
     }
     );
 });

@@ -31,7 +31,6 @@ const Gastos = ({ gastosList, setGastos, setDatoEditable }) => {
 
     if (result.isConfirmed) {
       await Axios.delete(`http://localhost:3001/deleteGas/${idGasto}`);
-      await getGastos();
       await Swal.fire({
         title: 'Eliminado',
         text: 'El registro ha sido eliminado',
@@ -41,15 +40,6 @@ const Gastos = ({ gastosList, setGastos, setDatoEditable }) => {
     }
   };
 
-  const getGastos = () => {
-    Axios.get('http://localhost:3001/gastos').then((response) => {
-      setGastos(response.data);
-    });
-  };
-
-  useEffect(() => {
-    getGastos();
-  }, []);
 
   return (
     <div className='container'>
