@@ -38,12 +38,12 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData 
         timer: 3000
       });
       
-      fetchData();
       navigate('/');
+      fetchData();
       return;
     }
     await Axios.post("http://localhost:3001/create", { concepto, cantidad })
-    
+    console.log("Se creo el registro");
     await Swal.fire({
       position: "top-center",
       icon: "success",
@@ -51,9 +51,11 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData 
       showConfirmButton: false,
       timer: 3000
     });
-    
-    fetchData();
+    console.log("Se registro la alarma");
     navigate('/');
+    console.log("despues del navigate");
+    fetchData();
+    console.log("despues del fetch data");
   };
 
   const handleCancel = () => {

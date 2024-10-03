@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-function NewGasto({ datos, setDatos, datoEditable, setDatoEditable }) {
+function NewGasto({ datos, setDatos, datoEditable, setDatoEditable, fetchData }) {
   const [idGasto, setIdGastos] = useState(null);
   const [concepto, setConcepto] = useState("");
   const [adeudo, setAdeudo] = useState("");
@@ -42,6 +42,7 @@ function NewGasto({ datos, setDatos, datoEditable, setDatoEditable }) {
         timer: 3000
       });
       
+      fetchData();
       navigate('/');
       return;
     }
@@ -54,7 +55,8 @@ function NewGasto({ datos, setDatos, datoEditable, setDatoEditable }) {
       showConfirmButton: false,
       timer: 3000
     });
-      
+    
+    fetchData();
     navigate('/');
   };
 
