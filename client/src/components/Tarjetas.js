@@ -69,8 +69,8 @@ const Tarjetas = ({ tarjetasList, setTarjetas, setDatoEditable, fetchData }) => 
               <td>{tarjeta.limiteCredito}</td>
               <td>{tarjeta.saldoActual}</td>
               <td>{tarjeta.tasaInteres}</td>
-              <td>{tarjeta.fechaCorte}</td>
-              <td>{tarjeta.fechaPago}</td>
+              <td>{new Date(tarjeta.fechaCorte).toISOString().split('T')[0]}</td>
+              <td>{new Date(tarjeta.fechaPago).toISOString().split('T')[0]}</td>
               <td>
                 <div className="btn-group">
                   <button

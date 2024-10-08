@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import Ahorros from './components/Ahorros';
 import Deudas from './components/Deudas';
 import Gastos from './components/Gastos';
 import Ingresos from './components/Ingresos';
+import NewAhorro from './components/NewAhorro';
 import NewDeuda from './components/NewDeuda';
 import NewGasto from './components/NewGasto'; 
 import NewIngreso from './components/NewIngreso';
@@ -16,6 +18,7 @@ function App () {
   const [gastosList, setGastos] = useState([]);
   const [deudasList, setDeudas] = useState([]); 
   const [tarjetasList, setTarjetas] = useState([]); 
+  const [ahorrosList, setAhorros] = useState([]); 
   const [datoEditable, setDatoEditable] = useState([]);
   //const navigate = useNavigate();
 
@@ -32,6 +35,9 @@ function App () {
       
       const tarjetasResponse = await Axios.get('http://localhost:3001/tarjetas');
       setTarjetas(tarjetasResponse.data);
+      
+      const ahorrosResponse = await Axios.get('http://localhost:3001/ahorros');
+      setAhorros(ahorrosResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -39,7 +45,7 @@ function App () {
 
   useEffect(() => {
     fetchData();
-  }, [gastosList, ingresosList, deudasList, tarjetasList]);
+  }, [gastosList, ingresosList, deudasList, tarjetasList, ahorrosList]);
 
   return (
     <Router>
@@ -113,6 +119,21 @@ function App () {
         <Route 
           path = "/NewTarjeta" 
           element={<NewTarjeta datos = {datos} setDatos = {setDatos} datoEditable = {datoEditable} setDatoEditable = {setDatoEditable} fetchData = {fetchData} />} 
+        />
+      </Routes>
+      
+      {/* Componente ahorros */}
+      <Ahorros 
+        ahorrosList={ahorrosList}
+        setahorros={setAhorros}
+        setDatoEditable={setDatoEditable}
+        fetchData = {fetchData}
+      />
+
+      <Routes>
+        <Route 
+          path = "/NewAhorro" 
+          element={<NewAhorro datos = {datos} setDatos = {setDatos} datoEditable = {datoEditable} setDatoEditable = {setDatoEditable} fetchData = {fetchData} />} 
         />
       </Routes>
     </Router>

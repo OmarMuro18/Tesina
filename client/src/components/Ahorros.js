@@ -3,24 +3,24 @@ import Axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const Deudas = ({ deudasList, setDeudas, setDatoEditable, fetchData }) => {
+const Ahorros = ({ ahorrosList, setAhorros, setDatoEditable, fetchData }) => {
   const navigate = useNavigate();
 
-  // Funciones de Deudas
-  const newDeudaForm = () => {
+  // Funciones de Ahorros
+  const newAhorroForm = () => {
     setDatoEditable(null);
-    navigate('/NewDeuda');
+    navigate('/NewAhorro');
   };
 
-  const editDeudaForm = (deuda) => {
-    setDatoEditable(deuda);
-    navigate('/NewDeuda');
+  const editAhorroForm = (ahorro) => {
+    setDatoEditable(ahorro);
+    navigate('/NewAhorro');
   };
 
-  const deleteDeuda = async (idDeuda) => {
+  const deleteAhorro = async (idAhorro) => {
     const result = await Swal.fire({
       title: 'Confirmar eliminación',
-      text: 'Una vez eliminada, no se podrá recuperar el registro',
+      text: 'Una vez eliminado, no se podrá recuperar el registro',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -30,10 +30,10 @@ const Deudas = ({ deudasList, setDeudas, setDatoEditable, fetchData }) => {
     });
 
     if (result.isConfirmed) {
-      await Axios.delete(`http://localhost:3001/deleteDeuda/${idDeuda}`);
+      await Axios.delete(`http://localhost:3001/deleteAhorro/${idAhorro}`);
       await Swal.fire({
-        title: 'Eliminada',
-        text: 'La deuda ha sido eliminada',
+        title: 'Eliminado',
+        text: 'El ahorro ha sido eliminado',
         icon: 'success',
         timer: 3000,
       });
@@ -45,40 +45,36 @@ const Deudas = ({ deudasList, setDeudas, setDatoEditable, fetchData }) => {
 
   return (
     <div className='container'>
-      <h1 style={{ textAlign: 'center', margin: 5 }}>Deudas</h1>
+      <h1 style={{ textAlign: 'center', margin: 5 }}>Ahorros</h1>
       <table className='table table-striped'>
         <thead>
           <tr>
             <th scope='col'>#</th>
             <th scope='col'>Concepto</th>
-            <th scope='col'>Saldo Actual</th>
-            <th scope='col'>Límite de Saldo</th>
-            <th scope='col'>Interés</th>
-            <th scope='col'>Fecha de Pago</th>
+            <th scope='col'>Total Requerido</th>
+            <th scope='col'>Total Abonado</th>
             <th scope='col'>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {deudasList.map((deuda, key) => (
-            <tr key={deuda.idDeuda}>
-              <th>{deuda.idDeuda}</th>
-              <td>{deuda.concepto}</td>
-              <td>{deuda.saldoActual}</td>
-              <td>{deuda.limiteSaldo}</td>
-              <td>{deuda.interes}</td>
-              <td>{new Date(deuda.fechaPago).toISOString().split('T')[0]}</td>
+          {ahorrosList.map((ahorro, key) => (
+            <tr key={ahorro.idAhorro}>
+              <th>{ahorro.idAhorro}</th>
+              <td>{ahorro.concepto}</td>
+              <td>{ahorro.totalRequerido}</td>
+              <td>{ahorro.totalAbonado}</td>
               <td>
                 <div className="btn-group">
                   <button
                     type="button"
-                    onClick={() => editDeudaForm(deuda)}
+                    onClick={() => editAhorroForm(ahorro)}
                     className="btn btn-info"
                   >
                     Editar
                   </button>
                   <button
                     type="button"
-                    onClick={() => deleteDeuda(deuda.idDeuda)}
+                    onClick={() => deleteAhorro(ahorro.idAhorro)}
                     className="btn btn-danger"
                   >
                     Eliminar
@@ -89,11 +85,11 @@ const Deudas = ({ deudasList, setDeudas, setDatoEditable, fetchData }) => {
           ))}
         </tbody>
       </table>
-      <button className="btn btn-success" onClick={newDeudaForm}>
-        Agregar nueva deuda
+      <button className="btn btn-success" onClick={newAhorroForm}>
+        Agregar nuevo ahorro
       </button>
     </div>
   );
 };
 
-export default Deudas;
+export default Ahorros;

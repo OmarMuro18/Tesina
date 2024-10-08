@@ -227,7 +227,7 @@ app.post('/createTarjeta', (req, res) => {
         }
         res.send("Tarjeta creada exitosamente");
     });
-  });
+});
 
 app.get("/tarjetas", (req, res) => {
     db.query('SELECT * FROM Tarjetas', (err, result) => {
@@ -268,7 +268,72 @@ app.delete('/deleteTarjeta/:idTarjeta', (req, res) => {
         } 
         res.send("Tarjeta eliminada exitosamente");
     });
-  });
+});
+
+//Ahorro
+app.post("/createAhorro", (req, res) => {
+    const concepto = req.body.concepto;
+    const totalRequerido = req.body.totalRequerido;
+    const totalAbonado = req.body.totalAbonado;
+
+    db.query(
+        'INSERT INTO Ahorros (concepto, totalRequerido, totalAbonado) VALUES (?, ?, ?)',
+        [concepto, totalRequerido, totalAbonado],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al crear el ahorro");
+                return;
+            }
+            res.status(201).send("Ahorro creado exitosamente");
+        }
+    );
+});
+
+app.get("/ahorros", (req, res) => {
+    db.query('SELECT * FROM Ahorros', (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Error al obtener los ahorros");
+            return;
+        }
+        res.send(result);
+    });
+});
+
+app.put("/updateAhorro", (req, res) => {
+    const idAhorro = req.body.idAhorro;
+    const concepto = req.body.concepto;
+    const totalRequerido = req.body.totalRequerido;
+    const totalAbonado = req.body.totalAbonado;
+
+    db.query(
+        'UPDATE Ahorros SET concepto=?, totalRequerido=?, totalAbonado=? WHERE idAhorro=?',
+        [concepto, totalRequerido, totalAbonado, idAhorro],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al actualizar el ahorro");
+                return;
+            }
+            res.send("Ahorro actualizado exitosamente");
+        }
+    );
+});
+
+app.delete("/deleteAhorro/:idAhorro", (req, res) => {
+    const idAhorro = req.params.idAhorro;
+
+    db.query('DELETE FROM Ahorros WHERE idAhorro=?', [idAhorro], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Error al eliminar el ahorro");
+            return;
+        }
+        res.send("Ahorro eliminado exitosamente");
+    });
+});
+
 
 //Confirmacion de conexion
 app.listen(3001, () => {
