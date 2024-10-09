@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Ahorros from './components/Ahorros';
+import BarraProgresoIngresos from './components/BarraProgresoIngresos';
 import Deudas from './components/Deudas';
 import Gastos from './components/Gastos';
 import Ingresos from './components/Ingresos';
@@ -61,6 +62,7 @@ function App () {
           </div>
         </div>
       </nav>
+      <BarraProgresoIngresos/>
 
       {/* Componente Ingresos */}
       <Ingresos 
