@@ -27,3 +27,101 @@
   margin-top: 5px;
   border-radius: 5px;
 }
+
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 1rem;
+  background-color: rgb(223, 223, 223);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-custom thead {
+  background-color: #4b5764; 
+  color: rgb(231, 231, 231);
+}
+
+.table-custom thead tr:first-child th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.table-custom thead tr:first-child th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table-custom tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+
+.table-custom tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+.table-custom th,
+.table-custom td {
+  padding: 12px;
+  border: 1px solid #dee2e6;
+  text-align: left;
+}
+
+.table-custom tbody tr:nth-child(odd) {
+  background-color: #f8f9fa; 
+}
+
+.table-custom tbody tr:hover {
+  background-color: #e9ecef; 
+}
+
+.table-custom .btn-group button {
+  margin-right: 5px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+}
+
+.btn-info:hover {
+  background-color: #138496;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.necesidad-basica {
+  background-color: #d4edda !important; 
+  color: #155724;
+}
+
+.personal {
+  background-color: #f8d7da !important; 
+  color: #721c24;
+}
+
+.low-interest {
+  background-color: #d4edda !important; 
+  color: #155724;
+}
+
+.medium-interest {
+  background-color: #fff3cd !important; 
+  color: #524319;
+}
+
+.high-interest {
+  background-color: #f8d7da !important; 
+  color: #721c24;
+}

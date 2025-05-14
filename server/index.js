@@ -17,10 +17,11 @@ const db = mysql.createConnection({
 app.post("/create", (req, res) => {
     const concepto = req.body.concepto;
     const cantidad = req.body.cantidad;
+    const tipo = req.body.tipo;
     
     db.query(
-        'INSERT INTO ingresos(concepto,cantidad) VALUES(?,?)',
-        [concepto,cantidad],
+        'INSERT INTO ingresos(concepto,cantidad,tipo) VALUES(?,?,?)',
+        [concepto,cantidad, tipo],
         (err,result) => {
             if(err){
                 console.log(err);
@@ -48,10 +49,11 @@ app.put("/update", (req, res) => {
     const idIngreso = req.body.idIngreso;
     const concepto = req.body.concepto;
     const cantidad = req.body.cantidad;
+    const tipo = req.body.tipo;
 
     db.query(
-        'UPDATE ingresos SET concepto=?,cantidad=? WHERE idIngreso=?',
-        [concepto,cantidad,idIngreso],
+        'UPDATE ingresos SET concepto = ?, cantidad = ?, tipo = ? WHERE idIngreso = ?',
+        [concepto, cantidad, tipo, idIngreso],
         (err,result) => {
             if(err){
                 console.log(err);
@@ -202,6 +204,43 @@ app.put("/updateDeuda", (req, res) => {
     );
 });
 
+app.put('/updateDeuda/:idDeuda', async (req, res) => {
+    const { idDeuda } = req.params;
+    const { nuevoLimiteSaldo } = req.body;
+  
+    if (!idDeuda || nuevoLimiteSaldo === undefined) {
+      return res.status(400).json({ error: 'Faltan datos en la solicitud' });
+    }
+  
+    try {
+      if (nuevoLimiteSaldo <= 0) {
+        // Eliminar la deuda si el saldo llega a 0 o menos
+        const deleteQuery = 'DELETE FROM deudas WHERE idDeuda = ?';
+        const [deleteResult] = await db.query(deleteQuery, [idDeuda]);
+  
+        if (deleteResult.affectedRows > 0) {
+          return res.status(200).json({ message: 'Deuda eliminada automáticamente' });
+        } else {
+          return res.status(404).json({ error: 'No se encontró la deuda para eliminar' });
+        }
+      } else {
+        // Actualizar la deuda con el nuevo saldo
+        const updateQuery = 'UPDATE deudas SET limiteSaldo = ? WHERE idDeuda = ?';
+        const [updateResult] = await db.query(updateQuery, [nuevoLimiteSaldo, idDeuda]); //Esta es la linea 229
+        console.log('Resultado de la consulta:', updateResult);
+  
+        if (updateResult.affectedRows > 0) {
+          return res.status(200).json({ message: 'Deuda actualizada correctamente' });
+        } else {
+          return res.status(404).json({ error: 'No se encontró la deuda para actualizar' });
+        }
+      }
+    } catch (error) {
+      console.error('Error en /updateDeuda:', error);
+      return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
+
 app.delete("/deleteDeuda/:idDeuda", (req, res) => {
     const idDeuda = req.params.idDeuda;
 
@@ -256,6 +295,43 @@ app.put('/updateTarjeta', (req, res) => {
         }
     );
 });
+
+app.put('/updateTarjeta/:idTarjeta', async (req, res) => {
+    const { idTarjeta } = req.params;
+    const { nuevoLimiteSaldo } = req.body;
+  
+    if (!idTarjeta || nuevoLimiteSaldo === undefined) {
+      return res.status(400).json({ error: 'Faltan datos en la solicitud' });
+    }
+  
+    try {
+      if (nuevoLimiteSaldo <= 0) {
+        // Eliminar la deuda si el saldo llega a 0 o menos
+        const deleteQuery = 'DELETE FROM tarjetas WHERE idTarjeta = ?';
+        const [deleteResult] = await db.query(deleteQuery, [idTarjeta]);
+  
+        if (deleteResult.affectedRows > 0) {
+          return res.status(200).json({ message: 'Tarjeta eliminada automáticamente' });
+        } else {
+          return res.status(404).json({ error: 'No se encontró la tarjeta para eliminar' });
+        }
+      } else {
+        // Actualizar la deuda con el nuevo saldo
+        const updateQuery = 'UPDATE tarjetas SET limiteCredito = ? WHERE idTarjeta = ?';
+        const [updateResult] = await db.query(updateQuery, [nuevoLimiteSaldo, idTarjeta]);
+        console.log('Resultado de la consulta:', updateResult);
+  
+        if (updateResult.affectedRows > 0) {
+          return res.status(200).json({ message: 'Tarjeta actualizada correctamente' });
+        } else {
+          return res.status(404).json({ error: 'No se encontró la tarjeta para actualizar' });
+        }
+      }
+    } catch (error) {
+      console.error('Error en /updateTarjeta:', error);
+      return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
 
 app.delete('/deleteTarjeta/:idTarjeta', (req, res) => {
     const { idTarjeta } = req.params;
@@ -319,6 +395,29 @@ app.put("/updateAhorro", (req, res) => {
             res.send("Ahorro actualizado exitosamente");
         }
     );
+});
+
+app.put('/updateAhorro/:idAhorro', async (req, res) => {
+    const { idAhorro } = req.params;
+    const { nuevoTotalRequerido } = req.body;
+
+    if (!idAhorro || nuevoTotalRequerido === undefined) {
+        return res.status(400).json({ error: 'Datos insuficientes en la solicitud' });
+    }
+
+    try {
+        const query = 'UPDATE ahorros SET totalRequerido = ? WHERE idAhorro = ?';
+        const [result] = await db.query(query, [nuevoTotalRequerido, idAhorro]);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'Ahorro actualizado correctamente' });
+        } else {
+            res.status(404).json({ error: 'No se encontró el registro de ahorro' });
+        }
+    } catch (error) {
+        console.error('Error en /updateAhorro:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 
 app.delete("/deleteAhorro/:idAhorro", (req, res) => {

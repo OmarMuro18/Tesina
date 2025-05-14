@@ -81,26 +81,26 @@ function NewAhorro({ datos, setDatos, datoEditable, setDatoEditable, fetchData }
             />
           </div>
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon1">Total Requerido:</span>
+            <span className="input-group-text" id="basic-addon1">Total Abonado:</span>
             <input
               type="number"
               onChange={(event) => setTotalRequerido(event.target.value)}
               className="form-control"
               value={totalRequerido}
-              placeholder="Ingrese el Total Requerido"
+              placeholder="Ingrese el Total Abonado"
               aria-label="TotalRequerido"
               aria-describedby="basic-addon1"
               required
             />
           </div>
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon1">Total Abonado:</span>
+            <span className="input-group-text" id="basic-addon1">Aportacion:</span>
             <input
               type="number"
               onChange={(event) => setTotalAbonado(event.target.value)}
               className="form-control"
               value={totalAbonado}
-              placeholder="Ingrese el Total Abonado"
+              placeholder="Ingrese el Aportacion"
               aria-label="TotalAbonado"
               aria-describedby="basic-addon1"
               required

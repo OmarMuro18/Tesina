@@ -85,23 +85,23 @@ function NewDeuda({ datos, setDatos, datoEditable, setDatoEditable, fetchData })
             />
           </div>
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon1">Saldo Actual:</span>
+            <span className="input-group-text" id="basic-addon1">Aportación:</span>
             <input type="number"
               onChange={(event) => setSaldoActual(event.target.value)}
               className="form-control"
               value={saldoActual}
-              placeholder="Ingrese el Saldo Actual"
+              placeholder="Ingrese la aportación"
               aria-label="SaldoActual"
               aria-describedby="basic-addon1"
             />
           </div>
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon1">Límite de Saldo:</span>
+            <span className="input-group-text" id="basic-addon1">Adeudo:</span>
             <input type="number"
               onChange={(event) => setLimiteSaldo(event.target.value)}
               className="form-control"
               value={limiteSaldo}
-              placeholder="Ingrese el Límite de Saldo"
+              placeholder="Ingrese el Adeudo"
               aria-label="LimiteSaldo"
               aria-describedby="basic-addon1"
             />

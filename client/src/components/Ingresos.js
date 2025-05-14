@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 const Ingresos = ({ ingresosList, setIngresos, setDatoEditable, fetchData }) => {
   const navigate = useNavigate();
@@ -46,12 +47,13 @@ const Ingresos = ({ ingresosList, setIngresos, setDatoEditable, fetchData }) => 
   return (
     <div className='container'>
       <h1 style={{ textAlign: 'center', margin: 5 }}>Ingresos</h1>
-      <table className='table table-striped'>
+      <table className='table-custom'>
         <thead>
           <tr>
             <th scope='col'>#</th>
             <th scope='col'>Concepto</th>
             <th scope='col'>Cantidad</th>
+            <th scope='col'>Tipo</th>
             <th scope='col'>Acciones</th>
           </tr>
         </thead>
@@ -61,6 +63,7 @@ const Ingresos = ({ ingresosList, setIngresos, setDatoEditable, fetchData }) => 
               <th>{ing.idIngreso}</th>
               <td>{ing.concepto}</td>
               <td>{ing.cantidad}</td>
+              <td>{ing.tipo}</td>
               <td>
                 <div className="btn-group">
                   <button

@@ -8,6 +8,7 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData 
   const [idIngreso, setIdIngresos] = useState(null);
   const [concepto, setConcepto] = useState("");
   const [cantidad, setCantidad] = useState("");
+  const [tipo, setTipo] = useState("");
   const navigate = useNavigate();
 
   useState (() => {
@@ -16,19 +17,22 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData 
     setIdIngresos(datoEditable.idIngreso);
     setConcepto(datoEditable.concepto);
     setCantidad(datoEditable.cantidad);
+    setTipo(datoEditable.tipo);
+    
     return;
 
   }
   setIdIngresos(null);
   setConcepto("");
   setCantidad("");
+  setTipo("");
 
   }, [datoEditable]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (datoEditable) {
-      await Axios.put("http://localhost:3001/update", {idIngreso, concepto, cantidad });
+      await Axios.put("http://localhost:3001/update", {idIngreso, concepto, cantidad, tipo });
       
       await Swal.fire({
         position: "top-center",
@@ -42,7 +46,7 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData 
       fetchData();
       return;
     }
-    await Axios.post("http://localhost:3001/create", { concepto, cantidad })
+    await Axios.post("http://localhost:3001/create", { concepto, cantidad, tipo })
     console.log("Se creo el registro");
     await Swal.fire({
       position: "top-center",
@@ -51,11 +55,8 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData 
       showConfirmButton: false,
       timer: 3000
     });
-    console.log("Se registro la alarma");
     navigate('/');
-    console.log("despues del navigate");
     fetchData();
-    console.log("despues del fetch data");
   };
 
   const handleCancel = () => {
@@ -91,6 +92,20 @@ function NewIngreso({ datos, setDatos, datoEditable, setDatoEditable, fetchData 
               aria-describedby="basic-addon1"
             />
           </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon3">Tipo:</span>
+            <select 
+                onChange={(event) => setTipo(event.target.value)}
+                className="form-control"
+                value={tipo}
+                aria-label="Tipo"
+                aria-describedby="basic-addon3"
+            >
+                <option value="">Seleccione el Tipo</option>
+                <option value="Principal">Principal</option>
+                <option value="Secundario">Secuandario</option>
+            </select>
+            </div>
           <button type="submit" className="btn btn-primary">
             {datoEditable ? "Actualizar" : "Registrar"}
           </button>

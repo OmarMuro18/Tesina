@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 const Gastos = ({ gastosList, setGastos, setDatoEditable, fetchData }) => {
   const navigate = useNavigate();
+  const [pagados, setPagados] = useState({});
 
   // Funciones de Gastos
   const newGastoForm = () => {
@@ -43,11 +45,15 @@ const Gastos = ({ gastosList, setGastos, setDatoEditable, fetchData }) => {
     }
   };
 
+  const marcarComoPagado = (idGasto) => {
+    setPagados((prev) => ({ ...prev, [idGasto]: true }));
+  };
 
+  // Función para determinar el color según el tipo de gasto
   return (
     <div className='container'>
       <h1 style={{ textAlign: 'center', margin: 5 }}>Gastos</h1>
-      <table className='table table-striped'>
+      <table className="table-custom">
         <thead>
           <tr>
             <th scope='col'>#</th>
@@ -59,8 +65,11 @@ const Gastos = ({ gastosList, setGastos, setDatoEditable, fetchData }) => {
           </tr>
         </thead>
         <tbody>
-          {gastosList.map((gas, key) => (
-            <tr key={gas.idGasto}>
+        {gastosList
+          .slice() // Creamos una copia para no mutar el estado original
+          .sort((a, b) => (a.tipo === "Necesidad Básica" ? -1 : 1)) // Ordenamos por tipo
+          .map((gas) => (
+            <tr key={gas.idGasto} className={gas.tipo === "Necesidad Básica" ? "necesidad-basica" : "personal"}>
               <th>{gas.idGasto}</th>
               <td>{gas.concepto}</td>
               <td>{gas.adeudo}</td>
@@ -72,6 +81,7 @@ const Gastos = ({ gastosList, setGastos, setDatoEditable, fetchData }) => {
                     type="button"
                     onClick={() => editGastoForm(gas)}
                     className="btn btn-info"
+                    disabled={pagados[gas.idGasto]}
                   >
                     Editar
                   </button>
@@ -79,14 +89,23 @@ const Gastos = ({ gastosList, setGastos, setDatoEditable, fetchData }) => {
                     type="button"
                     onClick={() => deletGasto(gas.idGasto)}
                     className="btn btn-danger"
+                    disabled={pagados[gas.idGasto]}
                   >
                     Eliminar
+                  </button>
+                  <button
+                  type="button"
+                    onClick={() => marcarComoPagado(gas.idGasto)}
+                    className="btn btn-success"
+                    disabled={pagados[gas.idGasto]} 
+                  >
+                    Pagar
                   </button>
                 </div>
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody>  
       </table>
       <button className="btn btn-success" onClick={newGastoForm}>
         Agregar nuevo gasto
